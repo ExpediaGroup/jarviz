@@ -1,0 +1,90 @@
+{
+  "appSetName": "MySampleAppSet",
+  "applications": [
+    {
+      "appName": "Fasterxml-Jackson",
+      "artifacts": [
+        {
+          "groupId": "com.fasterxml.jackson.core",
+          "artifactId": "jackson-core",
+          "version": "2.9.8"
+        },
+        {
+          "groupId": "com.fasterxml.jackson.core",
+          "artifactId": "jackson-databind",
+          "version": "2.9.8"
+        },
+        {
+          "groupId": "com.fasterxml.jackson.datatype",
+          "artifactId": "jackson-datatype-guava",
+          "version": "2.9.8"
+        }
+      ]
+    },
+    {
+      "appName": "Dropwizard",
+      "artifacts": [
+        {
+          "groupId": "io.dropwizard",
+          "artifactId": "dropwizard-util",
+          "version": "2.0.0"
+        },
+        {
+          "groupId": "io.dropwizard",
+          "artifactId": "dropwizard-jackson",
+          "version": "2.0.0"
+        },
+        {
+          "groupId": "io.dropwizard",
+          "artifactId": "dropwizard-lifecycle",
+          "version": "2.0.0"
+        }
+      ]
+    },
+    {
+      "appName": "Expedia-StreamRegistry",
+      "artifacts": [
+        {
+          "groupId": "com.expediagroup.streamplatform",
+          "artifactId": "stream-registry-core",
+          "version": "0.9.1"
+        },
+        {
+          "groupId": "com.expediagroup.streamplatform",
+          "artifactId": "stream-registry-graphql-maven-plugin",
+          "version": "0.9.1"
+        }
+      ]
+    },
+    {
+      "appName": "Expedia-Apiary",
+      "artifacts": [
+        {
+          "groupId": "com.expediagroup.apiary",
+          "artifactId": "apiary-receiver-sqs",
+          "version": "5.0.1"
+        }
+      ]
+    },
+    {
+      "appName": "Expedia-Rhapsody",
+      "artifacts": [
+        {
+          "groupId": "com.expediagroup",
+          "artifactId": "rhapsody-core",
+          "version": "0.0.15"
+        }
+      ]
+    },
+    {
+      "appName": "Expedia-ShuntingYard ",
+      "artifacts": [
+        {
+          "groupId": "com.expediagroup",
+          "artifactId": "shunting-yard-replicator",
+          "version": "3.0.1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "include": {
+    "targetPackage": "^(com\\.google).*$"
+  },
+  "exclude": {
+    "sourcePackage": "^(com\\.google).*$"
+  }
+}

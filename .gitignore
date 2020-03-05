@@ -1,0 +1,29 @@
+# Ignore Eclipse project files
+.project
+.settings
+.classpath
+
+# Ignore IDEA project files
+*.ipr
+*.iml
+*.iws
+.idea/
+
+# Ignore editor temporary files
+*.swp
+~*
+*~
+.*~
+
+# Ignore OS hidden files
+.DS_Store
+
+# Ignore build or runtime artifacts
+build/
+target/
+node_modules
+dependency-reduced-pom.xml
+
+# Ignore Jarviz generated files
+jarviz-result*
+jarviz_result*

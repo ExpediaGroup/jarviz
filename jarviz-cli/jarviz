@@ -1,0 +1,243 @@
+#!/bin/sh
+
+#####################################################################
+# Copyright 2020 Expedia, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#####################################################################
+
+# jarviz.sh - Jarviz CLI tool to generate dependency analytics for Java apps.
+JARVIZ_CLI_VERSION="1.0.0"
+JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION="1.0.0"
+JARVIZ_NODE_GRAPH_NPM_VERSION="1.0.0"
+
+JARVIZ_HOME="${HOME}/.jarviz"
+JARVIZ_JAR_FILE="jarviz_${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION}.jar"
+JARVIZ_JAR_PATH="${JARVIZ_HOME}/${JARVIZ_JAR_FILE}"
+JARVIZ_CONFIG_PATH="${JARVIZ_HOME}/config.json"
+
+JARVIZ_COMMAND_ANALYZE="analyze"
+JARVIZ_COMMAND_GRAPH="graph"
+
+jarviz_assert_exists() {
+  hash "$1" >/dev/null 2>&1 || { echo >&2 "Error: Jarviz CLI needs $1 but it is not installed"; exit 1; }
+}
+
+jarviz_show_logo() {
+    echo '\033[0;32m                            x                             \033[0m'
+    echo '\033[0;32m                           OOOO                           \033[0m'
+    echo '\033[0;32m                           YOZO8                          \033[0m'
+    echo '\033[0;32m         77SSP             O    O8                        \033[0m'
+    echo '\033[0;32m         77SSS            O7      88                      \033[0m'
+    echo '\033[0;32m          7SS SSS,       ZO         488Dl             DDDD\033[0m'
+    echo '\033[0;32m                 ,ZZS    O          S88DD            :DDDO\033[0m'
+    echo '\033[0;32m                     ZZZZZ           S88+D8         8D    \033[0m'
+    echo '\033[0;32m                     ZZZZOO           H    VD:    D8      \033[0m'
+    echo '\033[0;32m                     7ZZZZYO          H       VDK         \033[0m'
+    echo '\033[0;32m II7                ZZ      OO        H         D8        \033[0m'
+    echo '\033[0;32mxIII7             SS          OO      H          8D       \033[0m'
+    echo '\033[0;32m  x  :77I   SSSSSSZ             O8    H           8D      \033[0m'
+    echo '\033[0;32m         7SSSSSSSS               :8O  H            SD     \033[0m'
+    echo '\033[0;32m           7SSSSSZS                I888DZ           :D    \033[0m'
+    echo '\033[0;32m           SSSSSSS                 4888DD:            D:  \033[0m'
+    echo '\033[0;32m            SSSSS  Z:              V888DDD            Y4P \033[0m'
+    echo '\033[0;32m          7S        ZZZZZO     ytOP D88DD7                \033[0m'
+    echo '\033[0;32m         77          ZZZZOOOoP           ID:              \033[0m'
+    echo '\033[0;32m        I7            VZZP                 8D:            \033[0m'
+    echo '\033[0;32m       777                                   ADL          \033[0m'
+    echo '\033[0;32m                                             VDP          \033[0m'
+    echo '\033[0;32m                                                          \033[0m'
+    echo '\033[0;32m                                                          \033[0m'
+    echo '\033[0;32m          (8)                         (8)                 \033[0m'
+    echo '\033[0;32m                                                          \033[0m'
+    echo '\033[0;32m           88  V88888   88x8 88    88 88  888888          \033[0m'
+    echo '\033[0;32m           88      88I  88    88  88  88     889          \033[0m'
+    echo '\033[0;32m           88  x88888I  88    88xx88  88    88            \033[0m'
+    echo '\033[0;32m           88 x88  88I  88     8888   88  488             \033[0m'
+    echo '\033[0;32m           88  x888^8E  88      88    88  888888          \033[0m'
+    echo '\033[0;32m         4889                                             \033[0m'
+    echo '\033[0;32m                                                          \033[0m'
+}
+
+jarviz_show_version() {
+    echo "Jarviz ${JARVIZ_CLI_VERSION}"
+    echo "  Jarviz Artifact Version: ${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION}"
+    echo "  Jarviz Graph Version: ${JARVIZ_NODE_GRAPH_NPM_VERSION}"
+    echo "  Jarviz Home: ${JARVIZ_HOME}"
+    echo "  Jarviz Artifact: ${JARVIZ_JAR_PATH}"
+    echo "Node Version: $(node -v)"
+    echo "Npm Version: $(npm -v)"
+    echo "Java Version:"
+    java -version
+}
+
+jarviz_show_help() {
+    echo "Jarviz is a dependency analysis command line tool for Java."
+    echo ""
+    echo "  Usage:"
+    echo "    \$ jarviz <command> [parameters]"
+    echo ""
+    echo "  Commands:"
+    echo "    ${JARVIZ_COMMAND_ANALYZE}        To generate dependency data as a .jsonl file by analyzing Java artifacts."
+    echo "    ${JARVIZ_COMMAND_GRAPH}          First to generate dependency data as a .jsonl file by analyzing Java artifacts"
+    echo "                   and then to generate the dependency graph from that data."
+    echo ""
+    echo "  Parameters:"
+    echo "    -a, --artifacts  <arg>     Path to the file containing the list of artifacts (JSON)"
+    echo "    -f, --filter  <arg>        Path to the coupling filter configuration file (JSON)"
+    echo "    -h, --help                 To display help"
+    echo "    -v, --version              To display version"
+    echo ""
+    echo "    Version (-v) and help (-h) parameters are supported by both Jarviz CLI and individual commands."
+    echo ""
+    echo "  Exit Status:"
+    echo "    0    If successful"
+    echo "    1    If CLI initialization failed"
+    echo "    2    If analyser failed"
+    echo ""
+    echo "  Examples:"
+    echo "    To generate dependency graph using artifacts.json and filter.json:"
+    echo "      $ jarviz graph -a artifacts.json -f filter.json"
+    echo ""
+    echo "    To show help for analyze command:"
+    echo "      $ jarviz analyze -h"
+    echo ""
+    echo "    To show version for Jarviz CLI:"
+    echo "      $ jarviz -v"
+}
+
+jarviz_show_logo
+
+# --- Handle Arguments ----
+if [ "$1" = "-v" ] || [ "$1" = "--version" ] ; then
+    jarviz_show_version
+    exit 0
+elif [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+    jarviz_show_help
+    exit 0
+fi
+
+# Only for the first run: creates and bootstrap the ~/.jarviz directory
+if [ ! -d "${JARVIZ_HOME}" ] ; then
+    printf "Creating %s..." "${JARVIZ_HOME}"
+    mkdir "${JARVIZ_HOME}"
+    printf "Done\n"
+
+    # Copy samples
+    if [ -d "samples" ] ; then
+        if [ -f "samples/config.json" ] ; then
+            cp "samples/config.json" "${JARVIZ_CONFIG_PATH}"
+        fi
+        cp -R "samples" "${JARVIZ_HOME}/samples"
+        echo "Sample files were copied to ${JARVIZ_HOME}/samples"
+    fi
+fi
+
+# If the command is unknown, show help and error out
+if [ "$1" != "${JARVIZ_COMMAND_ANALYZE}" ] && [ "$1" != "${JARVIZ_COMMAND_GRAPH}" ] ; then
+    echo "Error: Unknown command '$1'"
+    echo "Expected format: $0 <${JARVIZ_COMMAND_ANALYZE}|${JARVIZ_COMMAND_GRAPH}> [options]"
+    exit 1
+fi
+
+# Stores a positive value if Java artifact needs to be run
+jarviz_run_java_app=-1
+if [ "$1" = "${JARVIZ_COMMAND_ANALYZE}" ] || [ "$1" = "${JARVIZ_COMMAND_GRAPH}" ] ; then
+    jarviz_run_java_app=1
+fi
+
+# Stores a positive value if Node artifact needs to be run
+jarviz_run_node_app=-1
+if [ "$1" = "${JARVIZ_COMMAND_GRAPH}" ] ; then
+    jarviz_run_node_app=1
+fi
+
+# --- Initialize ----
+# Verify all the required tools are installed
+if [ ${jarviz_run_java_app} -gt 0 ] ; then
+    jarviz_assert_exists java
+    jarviz_assert_exists mvn
+fi
+if [ ${jarviz_run_node_app} -gt 0 ] ; then
+    jarviz_assert_exists node
+    jarviz_assert_exists npm
+fi
+
+# Checks out Jarviz artifact from Maven repo, if necessary
+if [ ! -f "${JARVIZ_JAR_PATH}" ] ; then
+    echo "Downloading Jarviz ${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION} from Maven repository..."
+    # Clean up; remove any jarviz*.jar in ~/.jarviz
+    for f in "${JARVIZ_HOME}"/jarviz*.jar; do
+        if [ -f "${f}" ] ; then
+            echo "Removing ${f}"
+            rm "${f}"
+        fi
+    done
+
+    # Checks out Jarviz shaded artifact from Maven repo, and copy to ~/.jarviz
+    mvn dependency:copy -DoutputDirectory="${JARVIZ_HOME}" -Dartifact=com.vrbo:jarviz:${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION}:jar:shaded
+
+    # Rename Jarviz artifact in ~/.jarviz to the format of jarviz_version.jar
+    for f in "${JARVIZ_HOME}"/jarviz*.jar; do
+      printf "Copying to %s..." "${JARVIZ_JAR_PATH}"
+      mv "${f}" "${JARVIZ_JAR_PATH}"
+      printf "Done\n"
+    done
+fi
+
+# --- Run Commands ----
+# Eg: jarviz-results-20200909-171129
+JARVIZ_TIMESTAMP=$(date "+%Y%m%d-%H%M%S")
+JARVIZ_OUT_FILE_FORMAT="jarviz-dependency-data"
+# Create temp directory
+JARVIZ_TEMP_DIR=$(mktemp -d -t "jarviz-temp-${JARVIZ_TIMESTAMP}-XXXX")
+JARVIZ_TEMP_JSONL="${JARVIZ_TEMP_DIR}/${JARVIZ_OUT_FILE_FORMAT}.jsonl"
+# Actual output files
+JARVIZ_OUT_DIR="jarviz-results-${JARVIZ_TIMESTAMP}"
+JARVIZ_OUT_JSONL="${JARVIZ_OUT_DIR}/${JARVIZ_OUT_FILE_FORMAT}.jsonl"
+JARVIZ_OUT_GRAPH="${JARVIZ_OUT_DIR}/${JARVIZ_OUT_FILE_FORMAT}.html"
+
+if [ ${jarviz_run_java_app} -gt 0 ] ; then
+    # Step 1: Run Jarviz java artifact to generate dependency matrix (in .jsonl format)
+    echo "Java: Running ${JARVIZ_JAR_PATH}"
+
+    if java -cp "${JARVIZ_JAR_PATH}" "com.vrbo.jarviz.AnalyzeCommand" "$@" -c "${JARVIZ_CONFIG_PATH}" -o "${JARVIZ_TEMP_JSONL}" ; then
+      # Copy the files to actual output directory
+      if [ -f "${JARVIZ_TEMP_JSONL}" ] ; then
+          mkdir "${JARVIZ_OUT_DIR}"
+          cp "${JARVIZ_TEMP_JSONL}" "${JARVIZ_OUT_JSONL}"
+      fi
+    fi
+
+    # Remove temp directory
+    rm -rf "${JARVIZ_TEMP_DIR}"
+fi
+
+if [ ${jarviz_run_node_app} -gt 0 ] ; then
+    # Step 2: Run Jarviz graph Node app using previous .jsonl output
+    jarviz_npx_command="@homeaway/jarviz-graph@${JARVIZ_NODE_GRAPH_NPM_VERSION}"
+    if [ -f "${JARVIZ_OUT_JSONL}" ] ; then
+        echo "Node: Running ${jarviz_npx_command}"
+        npx "${jarviz_npx_command}" -i "${JARVIZ_OUT_DIR}" -o "${JARVIZ_OUT_DIR}"
+    fi
+fi
+
+# Show some useful paths
+if [ -f "${JARVIZ_OUT_JSONL}" ] ; then
+    echo "\033[0;32mDependency analysis data were saved to:\033[0m ${JARVIZ_OUT_JSONL}"
+fi
+if [ -f "${JARVIZ_OUT_GRAPH}" ] || [ -d "${JARVIZ_OUT_GRAPH}" ] ; then
+    echo "\033[0;32mDependency graph was saved to:\033[0m ${JARVIZ_OUT_GRAPH}"
+    echo '\033[1;32mPlease open the html graph in the browser:\033[0m'
+    echo "${PWD}/${JARVIZ_OUT_GRAPH}"
+fi
