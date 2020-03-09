@@ -8,6 +8,8 @@ JAR_CUR_DIR="$(pwd)"
 
 echo 'Building jarviz-graph'
 cd ./jarviz-graph
+
+npm install
 npm run build:example
 
 cd "$JAR_CUR_DIR"
