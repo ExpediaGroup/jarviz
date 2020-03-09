@@ -8,3 +8,11 @@ before_install:
     - nvm install $NODE_VERSION
     - node --version
     - npm --version
+jobs:
+    include:
+        - stage: build
+          name: "Build"
+          script: ./build-config/travis-build.sh
+        - stage: deploy
+          name: "Deploy"
+          script: ./build-config/travis-deploy.sh
