@@ -2,17 +2,17 @@ os: linux
 language: java
 jdk:
     - openjdk8
-env:
-    - NODE_VERSION="12"
 before_install:
-    - nvm install $NODE_VERSION
+    - nvm install 12
     - node --version
     - npm --version
 jobs:
     include:
         - stage: build
-          name: "Build"
-          script: ./build-config/travis-build.sh
+          name: "Build Java Module"
+          script: ./build-config/travis-build-java.sh
+        - script: ./build-config/travis-build-node.sh
+          name: "Build Node Module"
         - stage: deploy
           name: "Deploy"
           script: ./build-config/travis-deploy.sh
