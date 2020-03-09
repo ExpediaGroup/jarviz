@@ -6,4 +6,10 @@ set -o nounset
 
 echo 'Deploying Jarviz ...'
 
+echo '**********************'
+ls -l jarviz-lib
+echo '**********************'
+ls -l jarviz-graph
+echo '**********************'
+
 echo 'Done'

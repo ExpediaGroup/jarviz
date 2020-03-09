@@ -1,18 +1,22 @@
 os: linux
 language: java
 jdk:
-    - openjdk8
+  - openjdk8
 before_install:
-    - nvm install 12
-    - node --version
-    - npm --version
-jobs:
-    include:
-        - stage: build
-          name: "Build Java Module"
-          script: ./build-config/travis-build-java.sh
-        - script: ./build-config/travis-build-node.sh
-          name: "Build Node Module"
-        - stage: deploy
-          name: "Deploy"
-          script: ./build-config/travis-deploy.sh
+  - nvm install 12
+  - node --version
+  - npm --version
+script:
+  - ./build-config/travis-build-java.sh
+  - ./build-config/travis-build-node.sh
+deploy:
+  - provider: script
+    script: ./build-config/travis-deploy.sh
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: ./build-config/travis-deploy.sh
+    skip_cleanup: true
+    on:
+      tags: true
