@@ -42,6 +42,9 @@ public final class FileReadWriteUtils {
     /**
      * This will return the directory if it exists.
      * Otherwise this will create a new directory and returns it.
+     *
+     * @param path Path for the directory.
+     * @return File handle of the directory.
      */
     public static File getOrCreateDirectory(@Nonnull final String path) {
         final File file = new File(path);
@@ -63,6 +66,9 @@ public final class FileReadWriteUtils {
 
     /**
      * This will read a resource file from the classpath and return the content as a string.
+     *
+     * @param resourceFileName Path of the resource.
+     * @return The resource as a string.
      */
     public static String readResourceAsString(@Nonnull final String resourceFileName) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -83,6 +89,9 @@ public final class FileReadWriteUtils {
 
     /**
      * This will read the content from a file and return as a string.
+     *
+     * @param file The file handle.
+     * @return The file as a string.
      */
     public static String readFileAsString(@Nonnull final File file) {
         try {
@@ -94,6 +103,10 @@ public final class FileReadWriteUtils {
 
     /**
      * This will return the full path for the given file name.
+     *
+     * @param dirPath  Path of the directory.
+     * @param fileName Name of the file.
+     * @return Full path of the file.
      */
     public static String toFullPath(@Nonnull final String dirPath, @Nonnull final String fileName) {
         final String dirPathWithSeparator = dirPath.endsWith(File.separator) ? dirPath : dirPath + File.separator;
@@ -116,6 +129,9 @@ public final class FileReadWriteUtils {
 
     /**
      * Writes to a UTF-8 encoded file
+     *
+     * @param fileName     Full path of the file.
+     * @param writeHandler The write handler.
      */
     public static void writeToFile(final String fileName, final Consumer<Writer> writeHandler) {
         try {

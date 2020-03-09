@@ -43,6 +43,8 @@ public class CouplingRecordWriter {
 
     /**
      * Writes the given coupling record as a JSON blob into the file.
+     *
+     * @param couplingRecord The coupling record.
      */
     public void writeAsJson(final CouplingRecord couplingRecord) {
         if (writer == null) {
@@ -68,6 +70,8 @@ public class CouplingRecordWriter {
 
     /**
      * Closes the underlying file stream and return a boolean to indicate if the operation was successful.
+     *
+     * @return Indicates if the close operation was successful.
      */
     public boolean close() {
         if (writer == null) {

@@ -21,8 +21,11 @@ public final class NamingUtils {
     private NamingUtils() {}
 
     /**
-     * Converts a class name from bytecode format to source code format
-     * com/foo/bar/MyClass -> com.foo.bar.MyClass
+     * Converts a class name from bytecode format to source code format:
+     * com/foo/bar/MyClass to com.foo.bar.MyClass
+     *
+     * @param className The class name.
+     * @return Formatted class name.
      */
     public static String toSourceCodeFormat(final String className) {
         if (className == null) {
@@ -33,8 +36,11 @@ public final class NamingUtils {
     }
 
     /**
-     * Converts a class name from bytecode format to source code format
-     * com.foo.bar.MyClass -> com/foo/bar/MyClass
+     * Converts a class name from bytecode format to source code format:
+     * com.foo.bar.MyClass to com/foo/bar/MyClass
+     *
+     * @param className The class name.
+     * @return Formatted class name.
      */
     public static String toBytecodeFormat(final String className) {
         if (className == null) {

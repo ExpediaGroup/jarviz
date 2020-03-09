@@ -29,6 +29,10 @@ public final class CouplingFilterUtils {
      * Applying a {@link CouplingFilterConfig} against a given coupling.
      * Include and exclude filter rules will be applied in conjunction (AND operation).
      * If the return value is true, coupling should be retained or discarded otherwise.
+     *
+     * @param couplingFilterConfig The filters.
+     * @param coupling             The method coupling.
+     * @return Indicates whether the given coupling should be kept (true) or discarded (false).
      */
     public static boolean filterMethodCoupling(final CouplingFilterConfig couplingFilterConfig,
                                                final MethodCoupling coupling) {
@@ -44,6 +48,10 @@ public final class CouplingFilterUtils {
 
     /**
      * Matches a given coupling to a RegEx backed {@link CouplingFilter}.
+     *
+     * @param filter   The filter.
+     * @param coupling The coupling.
+     * @return Indicates whether the given coupling should be kept (true) or discarded (false).
      */
     static boolean matchCoupling(final CouplingFilter filter, final MethodCoupling coupling) {
         return matchString(filter.getSourcePackagePattern(), coupling.getSource().getPackageName()) &&
@@ -55,8 +63,12 @@ public final class CouplingFilterUtils {
     }
 
     /**
-     * Matches a given string to an optional RegEx patter.
+     * Matches a given string to an optional RegEx pattern.
      * If pattern is missing, this will consider it as matched, thus returning true.
+     *
+     * @param pattern The RegEx pattern
+     * @param string  The string to match to the given pattern.
+     * @return Indicates whether the given coupling should be kept (true) or discarded (false).
      */
     static boolean matchString(final Optional<Pattern> pattern, final String string) {
         return pattern.map(p -> p.matcher(string).matches())

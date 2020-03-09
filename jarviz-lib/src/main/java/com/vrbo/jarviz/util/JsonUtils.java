@@ -44,6 +44,12 @@ public final class JsonUtils {
         return om;
     }
 
+    /**
+     * Serializes the given object into a JSON blob.
+     *
+     * @param object Object to be serialized.
+     * @return JSON representation of the object.
+     */
     public static String toJsonString(final Object object) {
         try {
             Object effectiveObject = object;
@@ -57,6 +63,14 @@ public final class JsonUtils {
         }
     }
 
+    /**
+     * Deserializes the given object into a JSON blob.
+     *
+     * @param json  JSON representation of the object.
+     * @param clazz Type of the object to be created.
+     * @param <T>   Deserialized object.
+     * @return The deserialized object.
+     */
     public static <T> T fromJsonString(final String json, final Class<T> clazz) {
         try {
             return OBJECT_MAPPER.readValue(json, clazz);

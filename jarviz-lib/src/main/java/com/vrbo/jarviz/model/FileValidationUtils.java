@@ -25,6 +25,9 @@ public final class FileValidationUtils {
     /**
      * Verifies that the given segment of the filename is valid and
      * not containing the file separator (system dependent).
+     *
+     * @param part The segment of the filename.
+     * @return Indicates the given filename segment it's valid.
      */
     public static boolean validFileNamePart(final String part) {
         return part == null || part.isEmpty() || !part.contains(File.separator);

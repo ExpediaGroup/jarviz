@@ -41,6 +41,9 @@ import com.vrbo.jarviz.service.CouplingAnalyser;
 import static com.vrbo.jarviz.util.FileReadWriteUtils.readFileAsString;
 import static com.vrbo.jarviz.util.JsonUtils.fromJsonString;
 
+/**
+ * Implements analyze command for Javiz.
+ */
 public class AnalyzeCommand {
 
     interface ExitStatus {

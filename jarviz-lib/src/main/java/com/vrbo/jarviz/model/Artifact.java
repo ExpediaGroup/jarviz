@@ -40,6 +40,8 @@ public interface Artifact {
     /**
      * The packaging type of the artifact, default "jar".
      * Eg: "jar" or "war"
+     *
+     * @return The packaging type.
      */
     @Value.Default
     default String getPackaging() {
@@ -48,17 +50,23 @@ public interface Artifact {
 
     /**
      * Artifact id of the artifact, Eg: "foo-bar"
+     *
+     * @return The artifact id.
      */
     String getArtifactId();
 
     /**
      * Group id of the artifact, Eg: "com.abc.xyz"
+     *
+     * @return The group id.
      */
     String getGroupId();
 
     /**
      * Version of the artifact.
      * Eg: "1.239.1"
+     *
+     * @return The version.
      */
     String getVersion();
 
@@ -67,12 +75,16 @@ public interface Artifact {
      * Checking out a snapshot using Maven can result in a file with version containing timestamp
      * (e.g. `fooBar-1.0.1-20200708.191052-12.jar`).
      * Eg: "1.0.1-SNAPSHOT" (where version is "1.0.1-20200708.191052-12")
+     *
+     * @return The base version.
      */
     Optional<String> getBaseVersion();
 
     /**
      * Optional classifier for the artifact.
      * Eg: "src"
+     *
+     * @return The optional classifier.
      */
     Optional<String> getClassifier();
 
@@ -81,6 +93,8 @@ public interface Artifact {
      * For releases: "foo-bar.239.1.jar"
      * With classifier: "foo-bar.239.1-test.jar"
      * Snapshot: "foo-bar-2.0.1-20200708.191052-38.jar"
+     *
+     * @return The file name.
      */
     @JsonIgnore
     default String toFileName() {
@@ -95,6 +109,8 @@ public interface Artifact {
      * A string of the form groupId:artifactId:version[:packaging[:classifier]]
      * Eg:
      * Release: "com.abd.xyz:foo-bar:1.239.1:jar"
+     *
+     * @return The Maven id.
      */
     @JsonIgnore
     default String toMavenId() {

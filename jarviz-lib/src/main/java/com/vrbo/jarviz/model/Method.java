@@ -45,17 +45,23 @@ public interface Method {
     /**
      * Fully qualified class name
      * e.g.: foo.bar.MyClass
+     *
+     * @return The class name.
      */
     String getClassName();
 
     /**
      * Method name in the class
      * e.g.: doThat
+     *
+     * @return The method name.
      */
     String getMethodName();
 
     /**
      * e.g.: foo.bar.MyClass#doThat
+     *
+     * @return The short toString value.
      */
     @JsonIgnore
     default String toStringShort() {
@@ -65,6 +71,8 @@ public interface Method {
     /**
      * Simple class name
      * e.g.: For "foo.bar.MyClass", returns "MyClass"
+     *
+     * @return The simple class name.
      */
     default String getSimpleClassName() {
         final String fullName = getClassName();
@@ -75,6 +83,8 @@ public interface Method {
     /**
      * Package name of the class
      * e.g.: For "foo.bar.MyClass", returns "foo.bar"
+     *
+     * @return The package name.
      */
     default String getPackageName() {
         final String fullName = getClassName();

@@ -38,11 +38,15 @@ public interface ApplicationSet {
 
     /**
      * Optional name of the application set.
+     *
+     * @return The application set name.
      */
     Optional<String> getAppSetName();
 
     /**
      * The list of applications belongs to the application set.
+     *
+     * @return The set of applications name.
      */
     Set<Application> getApplications();
 

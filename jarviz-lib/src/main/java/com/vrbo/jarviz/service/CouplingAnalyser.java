@@ -45,6 +45,11 @@ public class CouplingAnalyser {
 
     /**
      * Start the analyser and return a list of {@link MethodCoupling}s.
+     *
+     * @param config         The configurations.
+     * @param applicationSet The application set.
+     * @param filterConfig   The filters.
+     * @param reportFile     File name for the report.
      */
     public void start(final JarvizConfig config,
                       final ApplicationSet applicationSet,
@@ -78,6 +83,12 @@ public class CouplingAnalyser {
 
     /**
      * Returns the number of couplings found for the application set.
+     *
+     * @param appSet             The application set.
+     * @param filterConfig       The filters.
+     * @param classLoaderService Class loader service.
+     * @param reportFile         File name for the report.
+     * @return Coupling count for the application set.
      */
     private int analyzeApplicationSet(final ApplicationSet appSet,
                                       final CouplingFilterConfig filterConfig,
@@ -102,6 +113,12 @@ public class CouplingAnalyser {
 
     /**
      * Returns the number of couplings found for the application.
+     *
+     * @param app                The application.
+     * @param filterConfig       The filters.
+     * @param classLoaderService Class loader service.
+     * @param writer             Coupling record writer.
+     * @return Coupling count for the application.
      */
     private int analyzeApplication(final Application app,
                                    final CouplingFilterConfig filterConfig,
@@ -125,6 +142,13 @@ public class CouplingAnalyser {
 
     /**
      * Returns the number of couplings found for the artifact.
+     *
+     * @param app                The application.
+     * @param artifact           The artifact.
+     * @param filterConfig       The filters.
+     * @param classLoaderService Class loader service.
+     * @param writer             Coupling record writer.
+     * @return Coupling count for the artifact.
      */
     private int analyzeArtifact(final Application app,
                                 final Artifact artifact,

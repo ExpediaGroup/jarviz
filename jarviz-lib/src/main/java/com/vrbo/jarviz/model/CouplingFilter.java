@@ -44,6 +44,8 @@ public interface CouplingFilter {
      * e.g.:
      * To match any source package name starting with com.xyz.foo or com.xyz.bar (including sub-packages):
      * <code>"^(com\\.xyz\\.foo|com\\.xyz\\.bar).*$"</code>
+     *
+     * @return The source package name.
      */
     Optional<String> getSourcePackage();
 
@@ -54,6 +56,8 @@ public interface CouplingFilter {
      * e.g.:
      * To match any source class name to ABC, Xyz or Hello:
      * <code>"^(ABC|Xyz|Hello)$"</code>
+     *
+     * @return The source class name.
      */
     Optional<String> getSourceClass();
 
@@ -62,6 +66,8 @@ public interface CouplingFilter {
      * e.g.:
      * To match a method name to getToken, setToken or isToken:
      * <code>"^(get|set|is)Token$"</code>
+     *
+     * @return The source method name.
      */
     Optional<String> getSourceMethod();
 
@@ -70,6 +76,8 @@ public interface CouplingFilter {
      * e.g.:
      * To exactly match any target package to com.xyz.foo or com.xyz.bar (excluding sub-packages):
      * <code>"^(com\\.xyz\\.foo|com\\.xyz\\.bar)$"</code>
+     *
+     * @return The target package name.
      */
     Optional<String> getTargetPackage();
 
@@ -80,6 +88,8 @@ public interface CouplingFilter {
      * e.g.:
      * To match any target class name to MyClass1, MyClass2, MyClass3 or MyClass4:
      * <code>"^MyClass[1-4]$"</code>
+     *
+     * @return The target class name.
      */
     Optional<String> getTargetClass();
 
@@ -88,6 +98,8 @@ public interface CouplingFilter {
      * e.g.:
      * To exactly match a method name to myMethod:
      * <code>"^myMethod$"</code>
+     *
+     * @return The target method name.
      */
     Optional<String> getTargetMethod();
 

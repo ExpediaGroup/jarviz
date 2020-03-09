@@ -127,6 +127,9 @@ public class JarClassLoaderService implements ClassLoaderService {
 
     /**
      * Maps a {@link ClassPath.ClassInfo} into a {@link ShadowClass}
+     *
+     * @param classInfo The {@link ClassPath.ClassInfo}.
+     * @return The {@link ShadowClass}.
      */
     static ShadowClass mapClassInfoToShadowClass(@Nonnull final ClassPath.ClassInfo classInfo) throws IOException {
         return new ShadowClass.Builder()
@@ -137,6 +140,9 @@ public class JarClassLoaderService implements ClassLoaderService {
 
     /**
      * Eg: file:com.homeaway.MyClass
+     *
+     * @param jarFileFullPath Full path for the jar file.
+     * @return The name in file protocol format.
      */
     static String fileNameToFileProtocol(@Nonnull final String jarFileFullPath) {
         if (jarFileFullPath.startsWith("file:")) {
@@ -148,6 +154,9 @@ public class JarClassLoaderService implements ClassLoaderService {
 
     /**
      * Eg: jar:file:com.homeaway.MyClass!
+     *
+     * @param jarFileFullPath Full path for the jar file.
+     * @return The name in file protocol format with jar: prefix.
      */
     static String fileNameToJarPrefix(@Nonnull final String jarFileFullPath) {
         return "jar:" + fileNameToFileProtocol(jarFileFullPath) + "!";

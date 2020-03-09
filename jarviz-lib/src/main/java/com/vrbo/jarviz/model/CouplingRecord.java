@@ -30,46 +30,64 @@ public interface CouplingRecord {
 
     /**
      * The human readable name of the application.
+     *
+     * @return The application name.
      */
     String getApplicationName();
 
     /**
      * The file name of the artifact (e.g. "foo-product-1.2.1.jar").
+     *
+     * @return The artifact file name.
      */
     String getArtifactFileName();
 
     /**
      * The id of the artifact (e.g. "foo-product").
+     *
+     * @return The artifact id.
      */
     String getArtifactId();
 
     /**
      * Group id of the artifact (e.g. "com.foo.bar").
+     *
+     * @return The artifact group.
      */
     String getArtifactGroup();
 
     /**
      * The version of the artifact (e.g. "1.2.0" or "1.2.1-SNAPSHOT").
+     *
+     * @return The artifact version.
      */
     String getArtifactVersion();
 
     /**
      * The fully qualified name of the source class in the coupling.
+     *
+     * @return The source class name.
      */
     String getSourceClass();
 
     /**
      * The method name (of the source class) in the coupling.
+     *
+     * @return The source method name.
      */
     String getSourceMethod();
 
     /**
      * The fully qualified name of the target class in the coupling.
+     *
+     * @return The target class name.
      */
     String getTargetClass();
 
     /**
      * The method name (of the target class) in the coupling.
+     *
+     * @return The target method name.
      */
     String getTargetMethod();
 

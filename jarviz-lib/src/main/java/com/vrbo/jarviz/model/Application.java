@@ -38,11 +38,15 @@ public interface Application {
     /**
      * The human readable name of the application.
      * Eg: ProductService
+     *
+     * @return Application name.
      */
     String getAppName();
 
     /**
      * The list of artifacts belongs to the application.
+     *
+     * @return List of artifacts.
      */
     List<Artifact> getArtifacts();
 

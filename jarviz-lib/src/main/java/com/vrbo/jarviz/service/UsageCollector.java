@@ -62,6 +62,8 @@ public class UsageCollector implements Collector {
 
     /**
      * Generates the efferent coupling graph for each method in the classes loaded by the class loader.
+     *
+     * @return The list of method couplings.
      */
     public List<MethodCoupling> getMethodCouplings() {
         return ImmutableList.copyOf(

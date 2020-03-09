@@ -38,11 +38,15 @@ public interface ShadowClass {
 
     /**
      * Fully qualified class name
+     *
+     * @return class name.
      */
     String getClassName();
 
     /**
      * The actual bytes of the class itself, which can be loaded to the memory
+     *
+     * @return The class object bytes.
      */
     @JsonIgnore
     @Value.Redacted

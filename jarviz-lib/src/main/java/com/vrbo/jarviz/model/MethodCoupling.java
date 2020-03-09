@@ -45,11 +45,15 @@ public interface MethodCoupling {
 
     /**
      * Source method
+     *
+     * @return The source method.
      */
     Method getSource();
 
     /**
      * Target method
+     *
+     * @return The target method.
      */
     Method getTarget();
 
