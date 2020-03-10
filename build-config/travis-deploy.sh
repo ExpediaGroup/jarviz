@@ -6,7 +6,7 @@ set -o nounset
 
 echo 'Deploying Jarviz'
 
-if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_JIRA_USERNAME" ]; then
+if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; then
   if [ ! -z "$TRAVIS_TAG" ]; then
     echo "Deploying release"
     mkdir -p ${GPG_DIR}
