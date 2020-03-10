@@ -360,31 +360,4 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <profiles>
-        <!--Activated for Maven Central Release Process-->
-        <profile>
-            <id>oss-release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>oss-snapshot</id>
-        </profile>
-    </profiles>
 </project>
