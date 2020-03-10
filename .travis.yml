@@ -15,3 +15,8 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+  - provider: script
+    script: ./build-config/travis-deploy.sh
+    skip_cleanup: true
+    on:
+      branch: master
