@@ -18,6 +18,7 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; the
 
     rm -rf ${GPG_DIR}
   else
+
     echo "Deploying jarviz-lib snapshot"
     mvn deploy --settings build-config/travis-mvn-settings.xml -B -U -P oss-snapshot -DskipTests=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
   fi
