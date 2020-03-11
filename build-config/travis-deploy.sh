@@ -26,11 +26,12 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; the
 
   else
     if [[ "$TRAVIS_COMMIT_MESSAGE" == '[maven-release-plugin] prepare release'* ]] ; then
-      echo 'Skipping mvn deploy for prepare release step.'
-    else
-      echo 'Deploying jarviz-lib snapshot'
-      mvn deploy --settings build-config/travis-mvn-settings.xml -B -U -P oss-snapshot -DskipTests=true
+      echo 'Skipping deploy for release preparation step.'
+      exit 0
     fi
+
+    echo 'Deploying jarviz-lib snapshot'
+    mvn deploy --settings build-config/travis-mvn-settings.xml -B -U -P oss-snapshot -DskipTests=true
   fi
 fi
 
