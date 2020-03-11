@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-JARVIZ_CUR_DIR="$(pwd)"
+JARVIZ_HOME="$(pwd)"
 cd ./jarviz-graph
 
 echo 'Installing jarviz-graph'
@@ -13,5 +13,5 @@ npm install
 echo 'Building jarviz-graph'
 npm run build
 
-cd "$JARVIZ_CUR_DIR"
+cd "${JARVIZ_HOME}"
 echo 'Done'

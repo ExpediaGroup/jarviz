@@ -5,7 +5,7 @@ set -o pipefail
 set -o nounset
 
 echo 'Trying to deploy Jarviz...'
-JARVIZ_CUR_DIR="$(pwd)"
+JARVIZ_HOME="$(pwd)"
 
 if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; then
   if [ ! -z "$TRAVIS_TAG" ]; then
@@ -22,7 +22,7 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; the
     echo 'Deploying jarviz-graph release'
     cd ./jarviz-graph
     npm publish --access public
-    cd "$JARVIZ_CUR_DIR"
+    cd "${JARVIZ_HOME}"
 
   else
     if [[ "$TRAVIS_COMMIT_MESSAGE" == '[maven-release-plugin] prepare release'* ]] ; then
