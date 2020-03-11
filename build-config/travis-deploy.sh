@@ -14,6 +14,10 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; the
     openssl aes-256-cbc -K $encrypted_a065d0ea71e2_key -iv $encrypted_a065d0ea71e2_iv -in build-config/gpg.asc.enc -out ${GPG_DIR}/gpg.asc -d
     gpg --version
     gpg --import ${GPG_DIR}/gpg.asc
+
+    echo 'Recieving public key...'
+    gpg --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys D5F915C564AD5F117400B9D9A974EB7CB594B2D0
+
     mvn deploy --settings build-config/travis-mvn-settings.xml -B -U -P oss-release -DskipTests=true
 
     rm -rf ${GPG_DIR}
