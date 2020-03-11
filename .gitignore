@@ -23,6 +23,8 @@ build/
 target/
 node_modules
 dependency-reduced-pom.xml
+release.properties
+pom.xml.releaseBackup
 
 # Ignore Jarviz generated files
 jarviz-result*
