@@ -9,9 +9,9 @@ In order to run the tool, Jarviz Graph expects [node](https://nodejs.org) and [n
 
 ### Sample Dependency Graph
 
-<img src="graph_full.png" width="800" />
+<img src="https://raw.githubusercontent.com/ExpediaGroup/jarviz/master/jarviz-graph/graph_full.png" width="800" />
 
-<img src="graph.png" width="800" />
+<img src="https://raw.githubusercontent.com/ExpediaGroup/jarviz/master/jarviz-graph/graph.png" width="800" />
 
 ## Usage
 
