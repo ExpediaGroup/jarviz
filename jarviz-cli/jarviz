@@ -226,7 +226,7 @@ fi
 
 if [ ${jarviz_run_node_app} -gt 0 ] ; then
     # Step 2: Run Jarviz graph Node app using previous .jsonl output
-    jarviz_npx_command="@homeaway/jarviz-graph@${JARVIZ_NODE_GRAPH_NPM_VERSION}"
+    jarviz_npx_command="@vrbo/jarviz-graph@${JARVIZ_NODE_GRAPH_NPM_VERSION}"
     if [ -f "${JARVIZ_OUT_JSONL}" ] ; then
         echo "Node: Running ${jarviz_npx_command}"
         npx "${jarviz_npx_command}" -i "${JARVIZ_OUT_DIR}" -o "${JARVIZ_OUT_DIR}"
