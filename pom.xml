@@ -19,7 +19,7 @@
 
     <groupId>com.expediagroup</groupId>
     <artifactId>jarviz-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>jarviz-parent</name>
@@ -57,7 +57,7 @@
         <url>scm:git:git@github.com:ExpediaGroup/jarviz.git</url>
         <connection>scm:git:git@github.com:ExpediaGroup/jarviz.git</connection>
         <developerConnection>scm:git:git@github.com:ExpediaGroup/jarviz.git</developerConnection>
-        <tag>jarviz-parent-0.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
