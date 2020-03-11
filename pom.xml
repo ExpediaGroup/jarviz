@@ -24,6 +24,7 @@
 
     <name>jarviz-parent</name>
     <description>Jar Visibility - Java Dependency Analyser</description>
+    <url>https://github.com/ExpediaGroup/jarviz</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,6 +42,7 @@
     <developers>
         <developer>
             <name>Expedia Group Committers</name>
+            <email>oss@expediagroup.com</email>
             <organization>Expedia Group</organization>
             <organizationUrl>https://expediagroup.com</organizationUrl>
         </developer>
@@ -54,9 +56,9 @@
     </licenses>
 
     <scm>
-        <url>scm:git:git@github.com:ExpediaGroup/jarviz.git</url>
         <connection>scm:git:git@github.com:ExpediaGroup/jarviz.git</connection>
         <developerConnection>scm:git:git@github.com:ExpediaGroup/jarviz.git</developerConnection>
+        <url>http://github.com/ExpediaGroup/jarviz</url>
         <tag>HEAD</tag>
     </scm>
 
