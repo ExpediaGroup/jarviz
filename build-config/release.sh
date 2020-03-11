@@ -23,7 +23,7 @@ printf '\nReleasing jarviz-graph...\n'
 cd ./jarviz-graph
 TEMP_NPM_VERSION=$(npm version patch)
 git add package.json
-git commit -m "Bumped version to ${TEMP_NPM_VERSION} in package.json"
+git commit -m "[npm] prepare release @vrbo/jarviz-graph@${TEMP_NPM_VERSION}"
 cd "${JARVIZ_HOME}"
 
 printf '\nBuilding jarviz-lib...\n'
