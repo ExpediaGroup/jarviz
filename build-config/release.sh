@@ -7,9 +7,17 @@ set -o nounset
 JARVIZ_HOME="$(pwd)"
 export NPM_TOKEN=''
 
-echo "Node version: $(npm --version)"
+echo "Node version: $(node --version)"
+echo "NPM version: $(npm --version)"
 echo 'Java version:'
 java -version
+
+printf '\nYou are about to release both Java and Node modules. Proceed [yes/no]? '
+read -r user_input
+if [ "$user_input" != 'yes' ]; then
+  echo 'Release canceled!'
+  exit 0
+fi
 
 printf '\nReleasing jarviz-graph...\n'
 cd ./jarviz-graph
