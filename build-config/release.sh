@@ -19,5 +19,5 @@ git commit -m "Bumped version to ${TEMP_NPM_VERSION} in package.json"
 cd "${JARVIZ_HOME}"
 
 printf '\nBuilding jarviz-lib...\n'
-mvn release:prepare -Dresume=false -DskipTests
+mvn release:prepare -Dresume=false -DskipTests -Darguments='-DskipTests'
 echo 'Done'
