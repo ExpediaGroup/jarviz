@@ -185,7 +185,7 @@ if [ ! -f "${JARVIZ_JAR_PATH}" ] ; then
     done
 
     # Checks out Jarviz shaded artifact from Maven repo, and copy to ~/.jarviz
-    mvn dependency:copy -DoutputDirectory="${JARVIZ_HOME}" -Dartifact=com.vrbo:jarviz:${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION}:jar:shaded
+    mvn dependency:copy -DoutputDirectory="${JARVIZ_HOME}" -Dartifact=com.expediagroup:jarviz:${JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION}:jar:shaded
 
     # Rename Jarviz artifact in ~/.jarviz to the format of jarviz_version.jar
     for f in "${JARVIZ_HOME}"/jarviz*.jar; do

@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.vrbo</groupId>
+        <groupId>com.expediagroup</groupId>
         <artifactId>jarviz-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
