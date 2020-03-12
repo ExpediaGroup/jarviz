@@ -4,15 +4,23 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-JARVIZ_HOME="$(pwd)"
-export NPM_TOKEN=''
+function removeNPMVersionPrefix() {
+  TMP_V="$1"
+  if [[ ("$TMP_V" == 'v'* ) || ("$TMP_V" == 'V'* ) ]] ; then
+    printf '%s' "${TMP_V:1}"
+  else
+    printf '%s' "${TMP_V}"
+  fi
+}
 
-echo "Node version: $(node --version)"
+JARVIZ_HOME="$(pwd)"
+
+echo "Node version: $(removeNPMVersionPrefix "$(node --version)")"
 echo "NPM version: $(npm --version)"
 echo 'Java version:'
 java -version
 
-printf '\nYou are about to release both Java and Node modules. Proceed [yes/no]? '
+printf '\n📦 \033[0;32mYou are about to release both Java and Node packages. Proceed ?\033[0m [yes/no] '
 read -r user_input
 if [ "$user_input" != 'yes' ]; then
   echo 'Release canceled!'
@@ -21,15 +29,15 @@ fi
 
 printf '\nPreparing release of jarviz-graph...\n'
 cd ./jarviz-graph
-TEMP_NPM_VERSION=$(npm version patch)
+TMP_NPM_VERSION=$(removeNPMVersionPrefix "$(npm version patch)")
 git add package.json
-git commit -m "[npm] prepare release @vrbo/jarviz-graph@${TEMP_NPM_VERSION}"
+git commit -m "[npm] prepare release @vrbo/jarviz-graph@${TMP_NPM_VERSION}"
 cd "${JARVIZ_HOME}"
 
 printf '\nPreparing release of jarviz-lib...\n'
 mvn release:prepare -Dresume=false -DskipTests -Darguments='-DskipTests'
 
-printf '\nPreparing release of jarviz-cli...\n'
-sed -i -E "s|JARVIZ_CLI_VERSION\=[^\n]*|JARVIZ_CLI_VERSION\=${TEMP_NPM_VERSION}|" jarviz-cli/jarviz
-
 echo 'Done'
+
+printf '\n✏️  \033[0;32mPlease modify jarviz-cli/jarviz and set %s as JARVIZ_CLI_VERSION.\033[0m\n' "'${TMP_NPM_VERSION}'"
+#sed -i -E "s|JARVIZ_CLI_VERSION\=[^\n]*|JARVIZ_CLI_VERSION\=${TEMP_NPM_VERSION}|" jarviz-cli/jarviz
