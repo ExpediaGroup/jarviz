@@ -17,7 +17,7 @@
 #####################################################################
 
 # jarviz.sh - Jarviz CLI tool to generate dependency analytics for Java apps.
-JARVIZ_CLI_VERSION='0.1.0'
+JARVIZ_CLI_VERSION='0.1.1'
 JARVIZ_JAVA_ARTIFACT_MAVEN_VERSION="${JARVIZ_CLI_VERSION}"
 JARVIZ_NODE_GRAPH_NPM_VERSION="${JARVIZ_CLI_VERSION}"
 
