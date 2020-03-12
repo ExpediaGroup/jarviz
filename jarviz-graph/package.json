@@ -1,6 +1,6 @@
 {
   "name": "@vrbo/jarviz-graph",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Utility for graphing JAR coupling data provided via jarviz",
   "main": "lib/index.js",
   "bin": "./bin/index.js",
