@@ -21,7 +21,7 @@ if [ "$TRAVIS_PULL_REQUEST" == 'false' -a ! -z "$SONATYPE_NEXUS_USERNAME" ]; the
 
     echo 'Deploying jarviz-graph release'
     cd ./jarviz-graph
-    npm publish --access public
+    npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}" && npm publish --access public
     cd "${JARVIZ_HOME}"
 
   else
