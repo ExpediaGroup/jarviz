@@ -19,13 +19,17 @@ if [ "$user_input" != 'yes' ]; then
   exit 0
 fi
 
-printf '\nReleasing jarviz-graph...\n'
+printf '\nPreparing release of jarviz-graph...\n'
 cd ./jarviz-graph
 TEMP_NPM_VERSION=$(npm version patch)
 git add package.json
 git commit -m "[npm] prepare release @vrbo/jarviz-graph@${TEMP_NPM_VERSION}"
 cd "${JARVIZ_HOME}"
 
-printf '\nBuilding jarviz-lib...\n'
+printf '\nPreparing release of jarviz-lib...\n'
 mvn release:prepare -Dresume=false -DskipTests -Darguments='-DskipTests'
+
+printf '\nPreparing release of jarviz-cli...\n'
+sed -i -E "s|JARVIZ_CLI_VERSION\=[^\n]*|JARVIZ_CLI_VERSION\=${TEMP_NPM_VERSION}|" jarviz-cli/jarviz
+
 echo 'Done'
