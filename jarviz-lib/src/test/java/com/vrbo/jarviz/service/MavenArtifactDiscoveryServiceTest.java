@@ -52,8 +52,8 @@ public class MavenArtifactDiscoveryServiceTest {
     @Test(expected = ArtifactNotFoundException.class)
     public void testDiscoverArtifact_Fail() throws ArtifactNotFoundException {
         final Artifact artifact = new Artifact.Builder()
-                                      .groupId("_invalid_group_")
-                                      .artifactId("_invalid_artifact_")
+                                      .groupId("__my_invalid_group__")
+                                      .artifactId("__my_invalid_artifact__")
                                       .version("0")
                                       .build();
         artifactDiscoveryService.discoverArtifact(artifact);
