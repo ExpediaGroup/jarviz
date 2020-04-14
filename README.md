@@ -4,6 +4,9 @@
 
 **Jarviz** is a dependency analysis tool designed for Java applications. Jarviz can provide a complete graph of couplings between Java methods across artifacts. Since non-private methods in a class can be accessed by other classes, method calls can be intertwined creating multifold couplings among each other. By analyzing the Java bytecode deeply, Jarviz can reveal these couplings in a user-friendly format.
 
+| :information_source: | Learn more about Jarviz on the [Expedia Group Technology blog](https://medium.com/expedia-group-tech/jarviz-can-you-show-my-application-couplings-a9e57f7f76a7) |
+| -------------------- | --------------------- |
+
 Jarviz consists of 3 components:
 
 ### Jarviz Library ([jarviz-lib](jarviz-lib))
