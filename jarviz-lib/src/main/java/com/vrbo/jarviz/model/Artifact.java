@@ -16,6 +16,8 @@
 
 package com.vrbo.jarviz.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.immutables.value.Value;
@@ -36,6 +38,8 @@ import static com.vrbo.jarviz.model.FileValidationUtils.validFileNamePart;
 @JsonDeserialize(as = ImmutableArtifact.class)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public interface Artifact {
+
+    List<String> NON_SPECIFIC_VERSIONS = Arrays.asList("LATEST", "RELEASE");
 
     /**
      * The packaging type of the artifact, default "jar".
@@ -93,16 +97,23 @@ public interface Artifact {
      * For releases: "foo-bar.239.1.jar"
      * With classifier: "foo-bar.239.1-test.jar"
      * Snapshot: "foo-bar-2.0.1-20200708.191052-38.jar"
+     * For unresolvable versions LATEST or RELEASE: "foo-bar.jar"
      *
      * @return The file name.
      */
     @JsonIgnore
     default String toFileName() {
-        return String.format("%s-%s%s.%s",
-                             getArtifactId(),
-                             getVersion(),
-                             getClassifier().map(s -> "-" + s).orElse(""),
-                             getPackaging());
+        if (isVersionLatestOrRelease()) {
+            return String.format("%s.%s",
+                getArtifactId(),
+                getPackaging());
+        } else {
+            return String.format("%s-%s%s.%s",
+                getArtifactId(),
+                getVersion(),
+                getClassifier().map(s -> "-" + s).orElse(""),
+                getPackaging());
+        }
     }
 
     /**
@@ -142,6 +153,16 @@ public interface Artifact {
             final String baseVersion = getBaseVersion().get();
             checkArgument(validFileNamePart(baseVersion), "baseVersion is invalid");
         }
+    }
+
+    /**
+     * Is Version LATEST or RELEASE?
+     *
+     * @return true if version is LATEST or RELEASE, false otherwise.
+     */
+    @Value.Default
+    default boolean isVersionLatestOrRelease() {
+        return NON_SPECIFIC_VERSIONS.contains(getVersion());
     }
 
     class Builder extends ImmutableArtifact.Builder {}

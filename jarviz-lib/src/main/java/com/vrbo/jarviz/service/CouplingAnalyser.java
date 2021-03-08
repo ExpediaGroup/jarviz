@@ -99,7 +99,7 @@ public class CouplingAnalyser {
 
         final CouplingRecordWriter writer = new CouplingRecordWriter(reportFile);
         for (Application application : appSet.getApplications()) {
-            appSetCouplingCount += analyzeApplication(application, filterConfig, classLoaderService, writer);
+            appSetCouplingCount += analyzeApplication(appSet, application, filterConfig, classLoaderService, writer);
         }
 
         log.info("ApplicationSet={}, TotalClassesAnalyzed={}, TotalCouplingsFound={}",
@@ -120,7 +120,8 @@ public class CouplingAnalyser {
      * @param writer             Coupling record writer.
      * @return Coupling count for the application.
      */
-    private int analyzeApplication(final Application app,
+    private int analyzeApplication(final ApplicationSet appSet,
+                                   final Application app,
                                    final CouplingFilterConfig filterConfig,
                                    final ClassLoaderService classLoaderService,
                                    final CouplingRecordWriter writer) {
@@ -131,7 +132,7 @@ public class CouplingAnalyser {
         for (Artifact artifact : app.getArtifacts()) {
             log.info("Analyzing artifact: {}", artifact.toFileName());
 
-            appCouplingCount += analyzeArtifact(app, artifact, filterConfig, classLoaderService, writer);
+            appCouplingCount += analyzeArtifact(appSet, app, artifact, filterConfig, classLoaderService, writer);
         }
 
         log.info("Application={}, TotalClassesAnalyzed={}, TotalCouplingsFound={}",
@@ -150,7 +151,8 @@ public class CouplingAnalyser {
      * @param writer             Coupling record writer.
      * @return Coupling count for the artifact.
      */
-    private int analyzeArtifact(final Application app,
+    private int analyzeArtifact(final ApplicationSet appSet,
+                                final Application app,
                                 final Artifact artifact,
                                 final CouplingFilterConfig filterConfig,
                                 final ClassLoaderService classLoaderService,
@@ -171,16 +173,18 @@ public class CouplingAnalyser {
 
         // Write the CouplingRecord as Json
         couplings.stream()
-                 .map(c -> toCouplingRecord(app, artifact, c))
+                 .map(c -> toCouplingRecord(appSet, app, artifact, c))
                  .forEach(writer::writeAsJson);
 
         return couplings.size();
     }
 
-    private static CouplingRecord toCouplingRecord(final Application app,
+    private static CouplingRecord toCouplingRecord(final ApplicationSet appSet,
+                                                   final Application app,
                                                    final Artifact artifact,
                                                    final MethodCoupling methodCoupling) {
         return new CouplingRecord.Builder()
+                   .appSetName(appSet.getAppSetName().orElse(""))
                    .applicationName(app.getAppName())
                    .artifactFileName(artifact.toFileName())
                    .artifactId(artifact.getArtifactId())

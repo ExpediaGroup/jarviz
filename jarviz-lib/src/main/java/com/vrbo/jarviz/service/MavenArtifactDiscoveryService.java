@@ -39,10 +39,12 @@ public class MavenArtifactDiscoveryService implements ArtifactDiscoveryService {
     private final Logger log = LoggerFactory.getLogger(MavenArtifactDiscoveryService.class);
 
     private final String localRepoPath;
+    private final boolean continueOnMavenError;
 
     @Inject
     public MavenArtifactDiscoveryService(final JarvizConfig config) {
         this.localRepoPath = config.getArtifactDirectory();
+        this.continueOnMavenError = config.getContinueOnMavenError();
     }
 
     @Override
@@ -59,18 +61,23 @@ public class MavenArtifactDiscoveryService implements ArtifactDiscoveryService {
         try {
             final String artifactMavenId = artifact.toMavenId();
             log.info("Maven: fetching artifact {}", artifactMavenId);
-            final String mvnCommand = String.format("mvn dependency:copy -DoutputDirectory=%s -Dartifact=%s",
-                                                    localRepoPath, artifactMavenId);
+
+            final String stripVersionSwitch = artifact.isVersionLatestOrRelease() ? "true" : "false";
+            final String mvnCommand = String.format("mvn dependency:copy -DoutputDirectory=%s -Dartifact=%s -Dmdep.stripVersion=%s",
+                                                    localRepoPath, artifactMavenId, stripVersionSwitch);
             final Process process = Runtime.getRuntime().exec(mvnCommand);
             int exitCode = process.waitFor();
 
+            drainInputStream(process.getInputStream()).forEach(s -> log.info("{}", s));
             if (exitCode != 0) {
                 // In case, there is an error, let's log and throw exception
-                drainInputStream(process.getInputStream()).forEach(s -> log.info("{}", s));
                 drainInputStream(process.getErrorStream()).forEach(s -> log.error("{}", s));
-                log.info("Maven command failed: {}", mvnCommand);
-                throw new ArtifactNotFoundException(
-                    String.format("Unable to fetch the artifact %s from Maven repository", artifactMavenId));
+                log.error("Maven command failed: {}", mvnCommand);
+
+                if (!continueOnMavenError) {
+                    throw new ArtifactNotFoundException(
+                        String.format("Unable to fetch the artifact %s from Maven repository", artifactMavenId));
+                }
             }
 
             return process;

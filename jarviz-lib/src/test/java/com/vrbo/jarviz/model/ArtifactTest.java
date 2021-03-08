@@ -74,6 +74,52 @@ public class ArtifactTest {
     }
 
     @Test
+    public void testToFileName_WhenVersionIsUnspecified() {
+
+        final Artifact releaseVerArtifact =
+            new Artifact.Builder()
+                .artifactId("api-service")
+                .groupId("com.vrbo.api")
+                .version("RELEASE")
+                .build();
+
+        assertThat(releaseVerArtifact.toFileName())
+            .isEqualTo("api-service.jar");
+
+        assertThat(new Artifact.Builder()
+                        .from(releaseVerArtifact)
+                        .classifier("logic")
+                        .build()
+                        .toFileName())
+                        .isEqualTo("api-service.jar");
+
+        assertThat(new Artifact.Builder()
+                        .from(releaseVerArtifact)
+                        .packaging("war")
+                        .build()
+                        .toFileName())
+                        .isEqualTo("api-service.war");
+
+        final Artifact latestVerArtifact =
+            new Artifact.Builder()
+                .artifactId("foo-bar")
+                .groupId("abc.xyz")
+                .version("LATEST")
+                .build();
+
+        assertThat(latestVerArtifact.toFileName())
+            .isEqualTo("foo-bar.jar");
+
+        assertThat(new Artifact.Builder()
+                    .from(latestVerArtifact)
+                    .version("LATEST")
+                    .baseVersion(Optional.empty())
+                    .build()
+                    .toFileName())
+                    .isEqualTo("foo-bar.jar");
+    }
+
+    @Test
     public void testToMavenId() {
 
         assertThat(releaseArtifact.toMavenId())
