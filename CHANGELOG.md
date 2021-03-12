@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2021-03-12
+### Fixed
+- New `continueOnMavenError` flag in `config.json`. When set to `true`, `Jarvis` will continue processing remaining applications, from `artifact.json`, after it encounters maven errors. Default value is `false`.
+- Added capability to use `RELEASE` and `LATEST` as dependency versions in `artifact.json`.
+- `appSetName` is now written to output `jsonl` file.
+
 ## [0.1.3] - 2020-03-12
 ### Fixed
 - Fixed MavenArtifactDiscoveryServiceTest.
