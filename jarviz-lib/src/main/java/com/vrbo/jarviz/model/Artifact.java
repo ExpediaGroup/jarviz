@@ -16,9 +16,8 @@
 
 package com.vrbo.jarviz.model;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.immutables.value.Value;
 
@@ -39,7 +38,7 @@ import static com.vrbo.jarviz.model.FileValidationUtils.validFileNamePart;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public interface Artifact {
 
-    List<String> NON_SPECIFIC_VERSIONS = Arrays.asList("LATEST", "RELEASE");
+    Set<String> NON_SPECIFIC_VERSIONS = Set.of("LATEST", "RELEASE");
 
     /**
      * The packaging type of the artifact, default "jar".

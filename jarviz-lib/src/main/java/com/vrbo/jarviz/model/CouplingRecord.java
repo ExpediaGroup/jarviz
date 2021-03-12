@@ -28,6 +28,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public interface CouplingRecord {
 
+    /**
+     * The optional name for the application set.
+     *
+     * @return The application set name.
+     */
     String getAppSetName();
 
     /**
