@@ -41,6 +41,15 @@ public interface JarvizConfig {
     String getArtifactDirectory();
 
     /**
+     * When processing artifacts in a given appSet, should Jarviz ignore any maven
+     * resolution or download errors for any given artifact and continue processing
+     * remaining ones?
+     *
+     * @return Should Jarviz ignore maven errors and continue processing remaining artifacts?
+     */
+    boolean getContinueOnMavenError();
+
+    /**
      * Creates a default config with artifactDirectory set to "/tmp/jarviz/artifacts"
      *
      * @return The {@link JarvizConfig}.

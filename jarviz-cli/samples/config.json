@@ -1,3 +1,4 @@
 {
-  "artifactDirectory": "/tmp/jarviz/artifacts"
+  "artifactDirectory": "/tmp/jarviz/artifacts",
+  "continueOnMavenError": false
 }

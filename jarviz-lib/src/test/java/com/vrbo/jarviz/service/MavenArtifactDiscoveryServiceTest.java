@@ -35,6 +35,7 @@ public class MavenArtifactDiscoveryServiceTest {
         artifactDiscoveryService = new MavenArtifactDiscoveryService(
             new JarvizConfig.Builder()
                 .artifactDirectory("/tmp/jarviz/artifacts")
+                .continueOnMavenError(false)
                 .build());
     }
 
@@ -59,4 +60,19 @@ public class MavenArtifactDiscoveryServiceTest {
         artifactDiscoveryService.discoverArtifact(artifact);
     }
 
+    @Test
+    public void testDiscoverArtifact_WhenContinueOnMavenError_IsTrue() throws ArtifactNotFoundException {
+        final MavenArtifactDiscoveryService artifactDiscoveryService2 = new MavenArtifactDiscoveryService(
+            new JarvizConfig.Builder()
+                .artifactDirectory("/tmp/jarviz/artifacts")
+                .continueOnMavenError(true)
+                .build());
+        final Artifact artifact = new Artifact.Builder()
+                                        .groupId("__my_invalid_group__")
+                                        .artifactId("__my_invalid_artifact__")
+                                        .version("0")
+                                        .build();
+        final File file = artifactDiscoveryService2.discoverArtifact(artifact);
+        assertThat(file).doesNotExist();
+    }
 }

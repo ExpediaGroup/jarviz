@@ -199,6 +199,7 @@ The output of the `analyze` step is a [JSON Lines (.jsonl)](http://jsonlines.org
 
 ```json
 {
+  "appSetName": "FooPortfolio",
   "applicationName": "MyApp",
   "artifactFileName": "foo-product-1.2.1.jar",
   "artifactId": "foo-product",
@@ -214,6 +215,7 @@ The output of the `analyze` step is a [JSON Lines (.jsonl)](http://jsonlines.org
 
 #### Fields
 
+- `appSetName` - Optional name for the application set.
 - `applicationName` - The human-readable name of the application.
 - `artifactFileName` - The file name of the artifact (e.g. `"foo-product-1.2.1.jar"`).
 - `artifactId` - The id of the artifact (e.g. `"foo-product"`).

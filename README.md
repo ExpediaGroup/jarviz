@@ -42,6 +42,7 @@ Jarviz CLI is a command-line tool designed for \*nix systems to perform dependen
 
 ```json
 {
+  "appSetName": "FooPortfolio",
   "applicationName": "MyApp",
   "artifactFileName": "foo-product-1.2.1.jar",
   "artifactId": "foo-product",
