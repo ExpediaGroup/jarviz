@@ -38,7 +38,7 @@
         <glassfish.hk2.version>2.5.0-b61</glassfish.hk2.version>
         <commons-cli.version>1.4</commons-cli.version>
         <!-- Test -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <assertj.version>3.9.1</assertj.version>
     </properties>
 
