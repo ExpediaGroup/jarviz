@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        java-version: [ 8 ]
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Setup Java SDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-maven-packages
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          restore-keys: ${{ runner.os }}-npm
+      - name: Build and test Java packages
+        run: ./build-config/travis-build-java.sh
+      - name: Build and test Node modules
+        run: ./build-config/travis-build-node.sh
