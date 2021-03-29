@@ -1,18 +1,18 @@
 /*
-* Copyright 2020 Expedia, Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2020 Expedia, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.vrbo.jarviz.model;
 
@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.ImmutableSet;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.vrbo.jarviz.model.FileValidationUtils.validFileNamePart;
@@ -38,7 +39,7 @@ import static com.vrbo.jarviz.model.FileValidationUtils.validFileNamePart;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public interface Artifact {
 
-    Set<String> NON_SPECIFIC_VERSIONS = Set.of("LATEST", "RELEASE");
+    Set<String> NON_SPECIFIC_VERSIONS = ImmutableSet.of("LATEST", "RELEASE");
 
     /**
      * The packaging type of the artifact, default "jar".
@@ -104,14 +105,14 @@ public interface Artifact {
     default String toFileName() {
         if (isVersionLatestOrRelease()) {
             return String.format("%s.%s",
-                getArtifactId(),
-                getPackaging());
+                                 getArtifactId(),
+                                 getPackaging());
         } else {
             return String.format("%s-%s%s.%s",
-                getArtifactId(),
-                getVersion(),
-                getClassifier().map(s -> "-" + s).orElse(""),
-                getPackaging());
+                                 getArtifactId(),
+                                 getVersion(),
+                                 getClassifier().map(s -> "-" + s).orElse(""),
+                                 getPackaging());
         }
     }
 
