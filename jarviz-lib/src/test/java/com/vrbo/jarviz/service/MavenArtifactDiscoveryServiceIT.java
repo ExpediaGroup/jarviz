@@ -26,7 +26,7 @@ import com.vrbo.jarviz.model.Artifact;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MavenArtifactDiscoveryServiceTest {
+public class MavenArtifactDiscoveryServiceIT {
 
     private MavenArtifactDiscoveryService artifactDiscoveryService;
 

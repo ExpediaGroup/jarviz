@@ -4,7 +4,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-if [[ ("$TRAVIS_COMMIT_MESSAGE" == '[maven-release-plugin] prepare release'* ) && ( -z "$TRAVIS_TAG" ) ]] ; then
+LAST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+LAST_COMMIT_TAG=$(git log -1 --pretty=format:"%h")
+if [[ ("$LAST_COMMIT_MSG" == '[maven-release-plugin] prepare release'* ) && ( -z "$LAST_COMMIT_TAG" ) ]] ; then
   echo 'Skipping build for release preparation step.'
   exit 0
 fi
