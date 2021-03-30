@@ -1,5 +1,5 @@
 {
   "artifactDirectory": "/tmp/jarviz/artifacts",
-  "mavenTimeOutSeconds": 180,
+  "mavenTimeOutSeconds": 300,
   "continueOnMavenError": false
 }

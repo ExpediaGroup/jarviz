@@ -62,12 +62,12 @@ public interface JarvizConfig {
     }
 
     /**
-     * The time out in seconds to be used when pulling artifacts from the Maven repo. Default is 180 (3 minutes).
+     * The time out in seconds to be used when pulling artifacts from the Maven repo. Default is 300 (5 minutes).
      * @return The Maven time out in seconds.
      */
     @Value.Default
     default int getMavenTimeOutSeconds() {
-        return 180;
+        return 300;
     }
 
     class Builder extends ImmutableJarvizConfig.Builder {}
