@@ -43,10 +43,13 @@ public class MavenArtifactDiscoveryService implements ArtifactDiscoveryService {
 
     private final boolean continueOnMavenError;
 
+    private final long mavenTimeOutSeconds;
+
     @Inject
     public MavenArtifactDiscoveryService(final JarvizConfig config) {
         this.localRepoPath = config.getArtifactDirectory();
         this.continueOnMavenError = config.getContinueOnMavenError();
+        this.mavenTimeOutSeconds = config.getMavenTimeOutSeconds();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class MavenArtifactDiscoveryService implements ArtifactDiscoveryService {
             final Process process = Runtime.getRuntime().exec(mvnCommand);
             boolean failed = false;
 
-            if (process.waitFor(60, TimeUnit.SECONDS)) {
+            if (process.waitFor(mavenTimeOutSeconds, TimeUnit.SECONDS)) {
                 drainInputStream(process.getInputStream()).forEach(s -> log.info("{}", s));
                 if (process.exitValue() != 0) {
                     failed = true;
@@ -80,7 +83,8 @@ public class MavenArtifactDiscoveryService implements ArtifactDiscoveryService {
                 }
             } else {
                 failed = true;
-                log.error("Maven command failed to execute in 60 seconds: {}", mvnCommand);
+                log.error("Maven command failed to execute in {} seconds: {}\n Consider increasing mavenTimeOutSeconds config value.",
+                          mavenTimeOutSeconds, mvnCommand);
             }
 
             if (failed && !continueOnMavenError) {

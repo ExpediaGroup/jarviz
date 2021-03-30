@@ -21,6 +21,7 @@ import org.immutables.value.Value;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Preconditions;
 
 /**
  * The configuration for the Jarviz tool.
@@ -31,6 +32,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public interface JarvizConfig {
 
+    @Value.Check
+    default void check() {
+        Preconditions.checkState(getMavenTimeOutSeconds() >= 0, "mavenTimeOutSeconds should not be negative");
+    }
+
     /**
      * This directory serves as the local cache to load the artifact files from.
      * If there is a Maven configuration specified, then this directory will be also used
@@ -38,7 +44,10 @@ public interface JarvizConfig {
      *
      * @return The artifact director path.
      */
-    String getArtifactDirectory();
+    @Value.Default
+    default String getArtifactDirectory() {
+        return "/tmp/jarviz/artifacts";
+    }
 
     /**
      * When processing artifacts in a given appSet, should Jarviz ignore any maven
@@ -47,17 +56,18 @@ public interface JarvizConfig {
      *
      * @return Should Jarviz ignore maven errors and continue processing remaining artifacts?
      */
-    boolean getContinueOnMavenError();
+    @Value.Default
+    default boolean getContinueOnMavenError() {
+        return false;
+    }
 
     /**
-     * Creates a default config with artifactDirectory set to "/tmp/jarviz/artifacts"
-     *
-     * @return The {@link JarvizConfig}.
+     * The time out in seconds to be used when pulling artifacts from the Maven repo. Default is 180 (3 minutes).
+     * @return The Maven time out in seconds.
      */
-    static JarvizConfig createDefaultConfig() {
-        return new Builder()
-                   .artifactDirectory("/tmp/jarviz/artifacts")
-                   .build();
+    @Value.Default
+    default int getMavenTimeOutSeconds() {
+        return 180;
     }
 
     class Builder extends ImmutableJarvizConfig.Builder {}
