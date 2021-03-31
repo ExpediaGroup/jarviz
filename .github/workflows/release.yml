@@ -7,10 +7,10 @@ defaults:
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches:
-      - master
+      - lk2
+  release:
+    types: [ published ]
+
 jobs:
   deploy_java:
     name: Build Java module
@@ -38,5 +38,10 @@ jobs:
         run: |
           echo "Maven version: $(mvn --version)"
       - name: Invoke build script for Java
-        run: ./build-config/build-java.sh
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PRIVATE_KEY_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+        run: ./build-config/release-java.sh
 
