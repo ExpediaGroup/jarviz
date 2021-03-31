@@ -1,24 +1,21 @@
-name: Build
+name: Release
 
 defaults:
   run:
     shell: bash
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  release:
+    types: [ published ]
+
 jobs:
-  build_java:
-    name: Build Java module
-    timeout-minutes: 15
+  release_java:
+    name: Release Java module
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: [ 8, 11 ]
+        java-version: [ 8 ]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -34,15 +31,22 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Display system info
+      - name: Import GPG signing key
+        run: echo ${{ secrets.JARVIZ_GPG_PRIVATE_KEY }} | base64 --decode | gpg --import --batch --no-tty --yes
+      - name: Run release script for Java
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_KEY_NAME: ${{ secrets.JARVIZ_GPG_KEY_NAME }}
+          GPG_PASSPHRASE: ${{ secrets.JARVIZ_GPG_PASSPHRASE }}
         run: |
-          echo "Maven version: $(mvn --version)"
-      - name: Invoke build script for Java
-        run: ./build-config/build-java.sh
-  build_node:
-    name: Build Node module
-    timeout-minutes: 15
-    needs: build_java
+          export GPG_TTY=$(tty)
+          echo "Releasing jarviz-lib for $GITHUB_REF"
+          mvn deploy --settings build-config/mvn-settings.xml -B -U -P oss-release -DskipTests
+  release_node:
+    name: Release Node module
+    timeout-minutes: 20
+    needs: release_java
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -62,9 +66,13 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
           restore-keys: ${{ runner.os }}-npm
-      - name: Display system info
+      - name: Run release script for Node
+        env:
+          NPM_TOKEN: ${{ secrets.JARVIZ_NPM_TOKEN }}
         run: |
-          echo "Node version: $(node -v)"
-          echo "NPM version: $(npm -v)"
-      - name: Invoke build script for Node
-        run: ./build-config/build-node.sh
+          echo "Releasing jarviz-graph for $GITHUB_REF"
+          cd ./jarviz-graph
+          npm install
+          npm run build
+          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}" && npm publish --access public
+          cd ..
