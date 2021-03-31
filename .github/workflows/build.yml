@@ -14,6 +14,7 @@ on:
 jobs:
   build_java:
     name: Build Java module
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -40,6 +41,7 @@ jobs:
         run: ./build-config/build-java.sh
   build_node:
     name: Build Node module
+    timeout-minutes: 15
     needs: build_java
     runs-on: ubuntu-latest
     strategy:
