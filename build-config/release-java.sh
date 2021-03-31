@@ -13,7 +13,7 @@ if [ ! -z "$SONATYPE_USERNAME" ]; then
   echo 'Releasing jarviz-lib'
   #mvn deploy --settings build-config/mvn-settings.xml -B -U -P oss-release -DskipTests=true
 
-  #mvn deploy --settings build-config/mvn-settings.xml -B -U -P oss-snapshot -DskipTests=true
+  mvn deploy --settings build-config/mvn-settings.xml -B -U -P oss-snapshot -DskipTests=true
 else
   echo 'Sonatype authentication variables missing!'
 fi
