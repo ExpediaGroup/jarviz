@@ -7,7 +7,7 @@ defaults:
 on:
   push:
     branches:
-      - lk2
+      - lk3
   release:
     types: [ published ]
 
