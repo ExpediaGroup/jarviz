@@ -35,7 +35,7 @@ git commit -m "[npm] prepare release @vrbo/jarviz-graph@${TMP_NPM_VERSION}"
 cd "${JARVIZ_HOME}"
 
 printf '\nPreparing release of jarviz-lib...\n'
-mvn release:prepare -Dresume=false -DskipTests
+mvn release:prepare -Dresume=false -DskipTests -Darguments='-DskipTests'
 
 echo 'Done'
 
