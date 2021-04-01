@@ -37,7 +37,7 @@ jobs:
       - name: Display system info
         run: |
           echo "Maven version: $(mvn --version)"
-      - name: Invoke build script for Java
+      - name: Run build script for Java
         run: |
           LAST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
           if [[ ("$LAST_COMMIT_MSG" == '[maven-release-plugin] prepare release'* ) ]] ; then
@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "Node version: $(node -v)"
           echo "NPM version: $(npm -v)"
-      - name: Invoke build script for Node
+      - name: Run build script for Node
         run: |
           LAST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
           if [[ ("$LAST_COMMIT_MSG" == '[maven-release-plugin] prepare release'* ) ]] ; then
