@@ -20,6 +20,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -164,7 +165,9 @@ public class AnalyzeCommand {
             System.err.println("Analyze failed");
             e.printStackTrace();
         } else {
-            System.err.println("Analyze failed: " + e.getMessage());
+            System.err.println("Analyze failed: " + e.getMessage() + "\n\t" +
+                Arrays.stream(e.getStackTrace()).map(String::valueOf).collect(Collectors.joining("\n\t"))
+            );
         }
     }
 
