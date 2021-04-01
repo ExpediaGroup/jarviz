@@ -39,5 +39,4 @@ mvn release:prepare -Dresume=false -DskipTests -Darguments='-DskipTests'
 
 echo 'Done'
 
-printf '\n✏️  \033[0;32mPlease modify jarviz-cli/jarviz and set %s as JARVIZ_CLI_VERSION.\033[0m\n' "'${TMP_NPM_VERSION}'"
-#sed -i -E "s|JARVIZ_CLI_VERSION\=[^\n]*|JARVIZ_CLI_VERSION\=${TEMP_NPM_VERSION}|" jarviz-cli/jarviz
+printf '\n✏️  \033[0;32mPlease publish a release for %s in Github and update JARVIZ_CLI_VERSION in jarviz-cli/jarviz.\033[0m\n' "${TMP_NPM_VERSION}"
