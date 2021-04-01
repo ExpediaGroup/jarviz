@@ -161,6 +161,8 @@ If `com.mycompany.MySource` class is analyzed with Jarviz for the usage of any c
 | `com.mycompany.MySource` | `lambda$callLambda$1` | `com.xyz.bar.Beta`  | `<init>`          |
 | `com.mycompany.MySource` | `lambda$callLambda$1` | `com.xyz.bar.Beta`  | `getBetaLongVal`  |
 
+See the full sample file: [sample_jarviz_result.jsonl](jarviz-cli/samples/sample_jarviz_result.jsonl)
+
 ## Development
 
 ### Initial Setup
@@ -188,7 +190,7 @@ $ ./jarviz
 
 ### How to Contribute
 
-If you are enthusiastic about contributing to Jarviz development, please send a pull request.
+If you are enthusiastic about contributing to Jarviz development, send a pull request. Please follow the guidance in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contact
 

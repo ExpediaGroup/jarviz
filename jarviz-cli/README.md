@@ -84,13 +84,19 @@ This is an input file containing configurations needed to run the tool. By defau
 
 ```json
 {
-  "artifactDirectory": "/tmp/jarviz/artifacts"
+  "artifactDirectory": "/tmp/jarviz/artifacts",
+  "mavenTimeOutSeconds": 300,
+  "continueOnMavenError": false
 }
 ```
+
+See the full sample file: [config.json](samples/config.json)
 
 #### Fields
 
 - `artifactDirectory` - Where local copies of the artifacts are stored. This directory will also be used to save the downloaded artifacts from a remote Maven repository.
+- `mavenTimeOutSeconds` - Set the time out for the Maven process to prevent it from hanging indefinitely. Default is 5 minutes (300).
+- `continueOnMavenError` - Tells the analyzer whether to continue or stop running if it encounters and error when downloading artifacts.
 
 
 ### Artifacts File
@@ -140,6 +146,8 @@ The artifacts file is an input file that specifies an application set holding th
 }
 ```
 
+See the full sample file: [artifacts.json](../jarviz-cli/samples/artifacts.json)
+
 #### Fields
 
 - `appSetName` - Optional name for the application set.
@@ -174,6 +182,8 @@ This includes couplings with target methods from classes where package name star
 }
 ```
 
+See the full sample file: [filter.json](../jarviz-cli/samples/filter.json)
+
 #### Fields
 
 - `sourcePackage` - Optional RegEx pattern to match with the package name (of the source class) in the coupling.
@@ -194,6 +204,14 @@ This includes couplings with target methods from classes where package name star
 The output of the `analyze` step is a [JSON Lines (.jsonl)](http://jsonlines.org/) file. If Jarviz finds a lot of dependencies, this file can be large and then this format makes it easy to stream-process the output.
 
 #### Sample
+
+```json
+{"applicationName": "MyApp", "artifactFileName": "foo-product-1.2.1.jar", "artifactId": "foo-product", "artifactGroup": "foo.bar", "artifactVersion": "1.2.1", "sourceClass": "foo.bar.MyClass", "sourceMethod": "doFirstTask", "targetClass": "foo.bar.YourClass", "targetMethod": "getProductId"}
+{"applicationName": "MyApp", "artifactFileName": "foo-product-1.2.1.jar", "artifactId": "foo-product", "artifactGroup": "foo.bar", "artifactVersion": "1.2.1", "sourceClass": "foo.bar.MyClass", "sourceMethod": "doSecondTask", "targetClass": "foo.bar.YourClass", "targetMethod": "getProductName"}
+...
+```
+
+See the full sample file: [sample_jarviz_result.jsonl](../jarviz-cli/samples/sample_jarviz_result.jsonl)
 
 ### Sample Dependency Coupling Data
 
