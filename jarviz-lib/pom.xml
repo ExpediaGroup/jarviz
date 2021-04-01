@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.expediagroup</groupId>
         <artifactId>jarviz-parent</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>jarviz</artifactId>
