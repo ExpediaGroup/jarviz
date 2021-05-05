@@ -153,6 +153,55 @@ public class CouplingFilterUtilsTest {
                                         .build(),
                                     diffPkgSourceTargetCoupling)).isTrue();
     }
+  
+    @Test
+    public void testFilterMethodCoupling_withWildCards() {
+        final MethodCoupling coupling1 =
+            new MethodCoupling.Builder()
+                .source(new Method.Builder()
+                            .className("com.foo.abc.MySourceClass")
+                            .methodName("iAmCallingYou")
+                            .build())
+                .target(new Method.Builder()
+                            .className("com.bar.cde.MyTargetClass")
+                            .methodName("whyDoYouCallMe")
+                            .build())
+                .build();
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo).*$")
+                                                         .build())
+                                            .build(),
+                                        coupling1)).isTrue();
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo).*$")
+                                                         .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                         .targetPackage("^(com\\.bar).*$")
+                                                         .build())
+                                            .build(),
+                                        coupling1)).isFalse();
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo).*$")
+                                                         .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo\\.abc).*$")
+                                                         .build())
+                                            .build(),
+                                        coupling1)).isFalse();
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo).*$")
+                                                         .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                         .sourcePackage("^(com\\.foo\\.abc).*$")
+                                                         .targetPackage("^(com\\.bar).*$")
+                                                         .build())
+                                            .build(),
+                                        coupling1)).isFalse();
+    }
 
     @Test
     public void testMatchCoupling() {
