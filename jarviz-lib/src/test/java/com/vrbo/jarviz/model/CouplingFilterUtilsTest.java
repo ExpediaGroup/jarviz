@@ -26,7 +26,7 @@ import com.vrbo.jarviz.config.CouplingFilterConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static com.vrbo.jarviz.model.CouplingFilterUtils.filterMethodCoupling;
-import static com.vrbo.jarviz.model.CouplingFilterUtils.matchCoupling;
+import static com.vrbo.jarviz.model.CouplingFilterUtils.matchIncludeCoupling;
 import static com.vrbo.jarviz.model.CouplingFilterUtils.matchString;
 
 public class CouplingFilterUtilsTest {
@@ -108,6 +108,64 @@ public class CouplingFilterUtilsTest {
     }
 
     @Test
+    public void testFilterMethodCoupling_includeExcludeUseCases() {
+        final MethodCoupling samePkgSourceTargetCoupling = new MethodCoupling.Builder()
+                                            .source(new Method.Builder()
+                                                .className("com.foo.MySourceClass")
+                                                .methodName("iAmCallingYou")
+                                                .build())
+                                            .target(new Method.Builder()
+                                                .className("com.foo.MyTargetClass")
+                                                .methodName("whyDoYouCallMe")
+                                                .build())
+                                            .build();
+
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                .targetPackage("^com\\.foo$")
+                                                .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                .sourcePackage("^com\\.foo$")
+                                                .targetPackage("^com\\.foo\\.bar$")
+                                                .build())
+                                            .build(),
+                                        samePkgSourceTargetCoupling)).isFalse();
+
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                .targetMethod("^whyDoYouCallMe$")
+                                                .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                .sourceMethod("^iAmCallingYou$")
+                                                .targetMethod("^why.*?")
+                                                .build())
+                                            .build(),
+                                        samePkgSourceTargetCoupling)).isFalse();
+
+        final MethodCoupling diffPkgSourceTargetCoupling = new MethodCoupling.Builder()
+                                        .source(new Method.Builder()
+                                            .className("com.bar.MySourceClass")
+                                            .methodName("iAmCallingYou")
+                                            .build())
+                                        .target(new Method.Builder()
+                                            .className("com.foo.MyTargetClass")
+                                            .methodName("whyDoYouCallMe")
+                                            .build())
+                                        .build();
+
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                        .include(new CouplingFilter.Builder()
+                                            .targetPackage("^com\\.foo$")
+                                            .build())
+                                        .exclude(new CouplingFilter.Builder()
+                                            .sourcePackage("^com\\.foo$")
+                                            .targetPackage("^com\\.foo\\.bar$")
+                                            .build())
+                                        .build(),
+                                    diffPkgSourceTargetCoupling)).isTrue();
+    }
+
+    @Test
     public void testFilterMethodCoupling_withWildCards() {
         final MethodCoupling coupling1 =
             new MethodCoupling.Builder()
@@ -158,9 +216,9 @@ public class CouplingFilterUtilsTest {
 
     @Test
     public void testMatchCoupling() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().build(), DEFAULT_COUPLING)).isTrue();
 
-        assertThat(matchCoupling(new CouplingFilter.Builder()
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder()
                                      .sourcePackage("[\\w\\.]+")
                                      .sourceClass("\\w+")
                                      .sourceMethod("\\w+")
@@ -170,7 +228,7 @@ public class CouplingFilterUtilsTest {
                                      .build(),
                                  DEFAULT_COUPLING)).isTrue();
 
-        assertThat(matchCoupling(new CouplingFilter.Builder()
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder()
                                      .sourcePackage("\\d+")
                                      .sourceClass("\\d+")
                                      .sourceMethod("\\d+")
@@ -183,44 +241,49 @@ public class CouplingFilterUtilsTest {
 
     @Test
     public void testMatchCoupling_sourcePackage() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourcePackage("[\\w\\.]+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourcePackage("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourcePackage("[\\w\\.]+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourcePackage("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchCoupling_sourceClass() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourceClass("\\w+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourceClass("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourceClass("\\w+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourceClass("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchCoupling_sourceMethod() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourceMethod("\\w+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().sourceMethod("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourceMethod("\\w+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().sourceMethod("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchCoupling_targetPackage() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetPackage("[\\w\\.]+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetPackage("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetPackage("[\\w\\.]+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetPackage("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchCoupling_targetClass() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetClass("\\w+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetClass("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetClass("\\w+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetClass("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchCoupling_targetMethod() {
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetMethod("\\w+").build(), DEFAULT_COUPLING)).isTrue();
-        assertThat(matchCoupling(new CouplingFilter.Builder().targetMethod("\\d+").build(), DEFAULT_COUPLING)).isFalse();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetMethod("\\w+").build(), DEFAULT_COUPLING)).isTrue();
+        assertThat(matchIncludeCoupling(new CouplingFilter.Builder().targetMethod("\\d+").build(), DEFAULT_COUPLING)).isFalse();
     }
 
     @Test
     public void testMatchString() {
-        assertThat(matchString(Optional.empty(), "fooBar")).isTrue();
-        assertThat(matchString(Optional.of(Pattern.compile("\\w+")), "fooBar")).isTrue();
-        assertThat(matchString(Optional.of(Pattern.compile("\\d+")), "fooBar")).isFalse();
+        assertThat(matchString(Optional.of(Pattern.compile("\\w+")), "fooBar", true)).isTrue();
+        assertThat(matchString(Optional.of(Pattern.compile("\\d+")), "fooBar", true)).isFalse();
+    }
+
+    @Test
+    public void testMatchStringDefaults() {
+        assertThat(matchString(Optional.empty(), "fooBar", true)).isTrue();
+        assertThat(matchString(Optional.empty(), "fooBar", false)).isFalse();
     }
 }

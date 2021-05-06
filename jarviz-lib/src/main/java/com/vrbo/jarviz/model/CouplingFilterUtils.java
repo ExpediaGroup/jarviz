@@ -27,7 +27,7 @@ public final class CouplingFilterUtils {
 
     /**
      * Applying a {@link CouplingFilterConfig} against a given coupling.
-     * Include and exclude filter rules will be applied in conjunction (AND operation).
+     * Include and exclude filter rules will be applied in conjunction (AND operation for Includes, OR for Excludes).
      * If the return value is true, coupling should be retained or discarded otherwise.
      *
      * @param couplingFilterConfig The filters.
@@ -38,41 +38,56 @@ public final class CouplingFilterUtils {
                                                final MethodCoupling coupling) {
         return
             couplingFilterConfig.getInclude()
-                                .map(f -> matchCoupling(f, coupling))
+                                .map(f -> matchIncludeCoupling(f, coupling))
                                 .orElse(true)
             &&
             !couplingFilterConfig.getExclude()
-                                 .map(f -> matchCoupling(f, coupling))
+                                 .map(f -> matchExcludeCoupling(f, coupling))
                                  .orElse(false);
     }
 
     /**
-     * Matches a given coupling to a RegEx backed {@link CouplingFilter}.
+     * Matches a given coupling to an include RegEx backed {@link CouplingFilter}.
      *
      * @param filter   The filter.
      * @param coupling The coupling.
      * @return Indicates whether the given coupling should be kept (true) or discarded (false).
      */
-    static boolean matchCoupling(final CouplingFilter filter, final MethodCoupling coupling) {
-        return matchString(filter.getSourcePackagePattern(), coupling.getSource().getPackageName()) &&
-               matchString(filter.getSourceClassPattern(), coupling.getSource().getSimpleClassName()) &&
-               matchString(filter.getSourceMethodPattern(), coupling.getSource().getMethodName()) &&
-               matchString(filter.getTargetPackagePattern(), coupling.getTarget().getPackageName()) &&
-               matchString(filter.getTargetClassPattern(), coupling.getTarget().getSimpleClassName()) &&
-               matchString(filter.getTargetMethodPattern(), coupling.getTarget().getMethodName());
+    static boolean matchIncludeCoupling(final CouplingFilter filter, final MethodCoupling coupling) {
+        return matchString(filter.getSourcePackagePattern(), coupling.getSource().getPackageName(), true) &&
+               matchString(filter.getSourceClassPattern(), coupling.getSource().getSimpleClassName(), true) &&
+               matchString(filter.getSourceMethodPattern(), coupling.getSource().getMethodName(), true) &&
+               matchString(filter.getTargetPackagePattern(), coupling.getTarget().getPackageName(), true) &&
+               matchString(filter.getTargetClassPattern(), coupling.getTarget().getSimpleClassName(), true) &&
+               matchString(filter.getTargetMethodPattern(), coupling.getTarget().getMethodName(), true);
     }
 
     /**
-     * Matches a given string to an optional RegEx pattern.
-     * If pattern is missing, this will consider it as matched, thus returning true.
+     * Matches a given coupling to an exclude RegEx backed {@link CouplingFilter}.
+     *
+     * @param filter   The filter.
+     * @param coupling The coupling.
+     * @return Indicates whether the given coupling should be excluded (true) or kept (false).
+     */
+    static boolean matchExcludeCoupling(final CouplingFilter filter, final MethodCoupling coupling) {
+        return matchString(filter.getSourcePackagePattern(), coupling.getSource().getPackageName(), false) ||
+               matchString(filter.getSourceClassPattern(), coupling.getSource().getSimpleClassName(), false) ||
+               matchString(filter.getSourceMethodPattern(), coupling.getSource().getMethodName(), false) ||
+               matchString(filter.getTargetPackagePattern(), coupling.getTarget().getPackageName(), false) ||
+               matchString(filter.getTargetClassPattern(), coupling.getTarget().getSimpleClassName(), false) ||
+               matchString(filter.getTargetMethodPattern(), coupling.getTarget().getMethodName(), false);
+    }
+
+    /**
+     * Matches a given string to an optional RegEx pattern. If pattern is missing, provided default value is returned.
      *
      * @param pattern The RegEx pattern
      * @param string  The string to match to the given pattern.
-     * @return Indicates whether the given coupling should be kept (true) or discarded (false).
+     * @param defaultValue The default value to return when there are no matches.
+     * @return Indicates whether the given coupling matches the pattern, else return provided default value.
      */
-    static boolean matchString(final Optional<Pattern> pattern, final String string) {
+    static boolean matchString(final Optional<Pattern> pattern, final String string, final boolean defaultValue) {
         return pattern.map(p -> p.matcher(string).matches())
-                      .orElse(true); // If pattern is not available, it is considered a match (pass through)
-
+                      .orElse(defaultValue);
     }
 }

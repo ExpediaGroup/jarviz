@@ -229,6 +229,13 @@ See the full sample file: [filter.json](../jarviz-cli/samples/filter.json)
 - `targetMethod` - Optional RegEx pattern to match with the method name (of the target class) in the coupling.
     - e.g. `^myMethod$` - To exactly match a method name to `myMethod`.
 
+#### Filtering using include and exclude
+
+Filtering can be done using include and exclude patterns at the package, class or method level. This is how filtering rules are applied:
+
+- `include` - Include rules are evaluated first. If includes are not provided, then all couplings in this scan will be included. If includes are provided, then a coupling must match all the provided include patterns (package, class and method). This uses an AND condition between provided include patterns.
+- `exclude` - Excludes are evaluated for all couplings that pass include rules. If excludes are not provided, then all couplings are included. If excludes are provided, then a coupling must not match any of the provided exclude patterns (package, class or method). This uses an OR condition between provided exclude patterns.
+
 #### Java References
 
 | Link |
