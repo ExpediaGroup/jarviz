@@ -108,7 +108,7 @@ public class CouplingFilterUtilsTest {
     }
 
     @Test
-    public void testFilterMethodCouplingSelfExclude() {
+    public void testFilterMethodCoupling_includeExcludeUseCases() {
         final MethodCoupling samePkgSourceTargetCoupling = new MethodCoupling.Builder()
                                             .source(new Method.Builder()
                                                 .className("com.foo.MySourceClass")
@@ -127,6 +127,17 @@ public class CouplingFilterUtilsTest {
                                             .exclude(new CouplingFilter.Builder()
                                                 .sourcePackage("^com\\.foo$")
                                                 .targetPackage("^com\\.foo\\.bar$")
+                                                .build())
+                                            .build(),
+                                        samePkgSourceTargetCoupling)).isFalse();
+
+        assertThat(filterMethodCoupling(new CouplingFilterConfig.Builder()
+                                            .include(new CouplingFilter.Builder()
+                                                .targetMethod("^whyDoYouCallMe$")
+                                                .build())
+                                            .exclude(new CouplingFilter.Builder()
+                                                .sourceMethod("^iAmCallingYou$")
+                                                .targetMethod("^why.*?")
                                                 .build())
                                             .build(),
                                         samePkgSourceTargetCoupling)).isFalse();
@@ -153,7 +164,7 @@ public class CouplingFilterUtilsTest {
                                         .build(),
                                     diffPkgSourceTargetCoupling)).isTrue();
     }
-  
+
     @Test
     public void testFilterMethodCoupling_withWildCards() {
         final MethodCoupling coupling1 =
