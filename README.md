@@ -2,7 +2,9 @@
 
 # Jarviz [![Build Status](https://github.com/ExpediaGroup/jarviz/actions/workflows/build.yml/badge.svg)](https://github.com/ExpediaGroup/jarviz/actions)
 
-**Jarviz** is a dependency analysis tool designed for Java applications. Jarviz can provide a complete graph of couplings between Java methods across artifacts. Since non-private methods in a class can be accessed by other classes, method calls can be intertwined creating multifold couplings among each other. By analyzing the Java bytecode deeply, Jarviz can reveal these couplings in a user-friendly format.
+Interdependencies between software modules are very difficult problems to solve. When your organization grows, these interdependencies multiply, potentially leading to low-cohesion and high-coupling among software modules. This is where Jarviz can help to understand these intricate dependencies down to the field level. 
+
+Jarviz is a dependency analysis tool for Java applications. Since non-private methods in Java classes can be accessed by other classes, method calls can be intertwined creating manifold couplings among each other. Jarviz deeply analyzes Java bytecode to reveal these couplings in a user-friendly format. It scans binary artifacts using a custom classloader and generates a complete graph of dependency couplings between methods across multiple artifacts. Jarviz consists of three modules: a Java library to scan dependencies in binary artifacts, a Node.js module to generate a visual graph and a command-line-interface to run it easility in a shell.
 
 | :information_source: | Learn more about Jarviz on the [Expedia Group Technology blog](https://medium.com/expedia-group-tech/jarviz-can-you-show-my-application-couplings-a9e57f7f76a7) |
 | -------------------- | --------------------- |
