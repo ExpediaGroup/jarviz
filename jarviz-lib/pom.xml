@@ -35,7 +35,7 @@
         <logback.version>1.2.3</logback.version>
         <javax.inject.version>1</javax.inject.version>
         <fasterxml.jackson.version>2.9.8</fasterxml.jackson.version>
-        <glassfish.hk2.version>2.5.0-b61</glassfish.hk2.version>
+        <glassfish.hk2.version>3.0.3</glassfish.hk2.version>
         <commons-cli.version>1.4</commons-cli.version>
         <!-- Test -->
         <junit.version>4.13.1</junit.version>
