@@ -32,7 +32,7 @@
         <org.ow2.asm.version>9.1</org.ow2.asm.version>
         <google.guava.version>30.0-jre</google.guava.version>
         <slf4j.version>1.7.26</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.11</logback.version>
         <javax.inject.version>1</javax.inject.version>
         <fasterxml.jackson.version>2.9.8</fasterxml.jackson.version>
         <glassfish.hk2.version>3.0.3</glassfish.hk2.version>
