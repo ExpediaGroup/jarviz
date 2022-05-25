@@ -30,7 +30,7 @@
     <properties>
         <immutables.version>2.9.0</immutables.version>
         <org.ow2.asm.version>9.1</org.ow2.asm.version>
-        <google.guava.version>30.0-jre</google.guava.version>
+        <google.guava.version>30.1.1-jre</google.guava.version>
         <slf4j.version>1.7.36</slf4j.version>
         <logback.version>1.2.11</logback.version>
         <javax.inject.version>1</javax.inject.version>
