@@ -28,7 +28,7 @@
     <description>Jar Visibility - Java Dependency Analyser</description>
 
     <properties>
-        <immutables.version>2.9.0</immutables.version>
+        <immutables.version>2.10.1</immutables.version>
         <org.ow2.asm.version>9.1</org.ow2.asm.version>
         <google.guava.version>30.0-jre</google.guava.version>
         <slf4j.version>1.7.36</slf4j.version>
