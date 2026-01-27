@@ -39,7 +39,7 @@
         <commons-cli.version>1.5.0</commons-cli.version>
         <!-- Test -->
         <junit.version>4.13.2</junit.version>
-        <assertj.version>3.9.1</assertj.version>
+        <assertj.version>3.27.7</assertj.version>
     </properties>
 
     <dependencyManagement>
